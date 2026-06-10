@@ -1,5 +1,6 @@
 import express from 'express';
 import pool from './utils/db.js';
+import errorHandler from './middlewares/errorHandler.js';
 
 const app = express()
 const port = process.env.SERVER_PORT || 3000
@@ -21,6 +22,7 @@ app.get('/', (request, response) => {
         .send('<h1>Express blog Routing</h1>')
 })
 
+app.use(errorHandler);
 
 app.listen(port, (error) => {
     if (error) {
