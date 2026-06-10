@@ -1,16 +1,19 @@
 import express from 'express';
 import pool from '../utils/db.js';
+import { index } from '../controllers/products';
 
 const router = express.Router();
 
-// GET /products
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM products');
-    res.json(rows);
-  } catch (error) {
-    console.error('Errore nella query ' + error.message);
-  }
-});
+// importazione controllers
 
+// importazione middlewares
+
+// impostazione router
+
+const router = express.Router();
+
+// rotta index
+router.get('', index);
+
+// rotta show
 export default router;

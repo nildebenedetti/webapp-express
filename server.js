@@ -4,7 +4,8 @@ import pool from './utils/db.js';
 const app = express()
 const port = process.env.SERVER_PORT || 3000
 
-app.use(express.json());
+app.use(express.static('public')); // middleware per static files
+app.use(express.json());// middleware interprete
 
 import productsRouter from './routers/products.js';
 app.use('/products', productsRouter);
