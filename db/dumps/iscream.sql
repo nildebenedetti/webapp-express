@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'beeb6fc0-5feb-11f1-b164-978f056c0e01:1-140';
+--SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'beeb6fc0-5feb-11f1-b164-978f056c0e01:1-140';
 
 --
 -- Table structure for table `categories`
