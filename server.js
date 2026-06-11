@@ -1,10 +1,12 @@
 import express from 'express';
 import pool from './utils/db.js';
+import cors from 'cors';
 
 const app = express()
 const port = process.env.SERVER_PORT || 3000
 
 app.use(express.static('public')); // middleware per static files
+app.use(cors());
 app.use(express.json());// middleware interprete
 
 import productsRouter from './routers/products.js';
