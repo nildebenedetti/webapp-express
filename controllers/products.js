@@ -2,6 +2,7 @@
 import pool from '../utils/db.js';
 
 async function index(request, response) {
+
     try {
         const [rows] = await pool.query('select * from `products`');
     
@@ -17,7 +18,6 @@ async function index(request, response) {
             results: null
         })
     }
-
 
 }
 

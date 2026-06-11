@@ -11,7 +11,7 @@ import { index } from '../controllers/products.js';
 const router = express.Router();
 
 // rotta index
-router.get('', index);
+router.get('/', index);
 
 // rotta show
 export default router;
