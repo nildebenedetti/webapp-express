@@ -1,4 +1,6 @@
 import express from 'express';
+import categoriesRouter from './routers/categoriesRouter.js';
+// import middleware
 import pool from './utils/db.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFound from './middlewares/notFound.js';
@@ -9,6 +11,7 @@ const port = process.env.SERVER_PORT || 3000
 app.use(express.static('public')); // middleware per static files
 app.use(express.json());// middleware interprete
 
+app.use(categoriesRouter);
 import productsRouter from './routers/products.js';
 app.use('/products', productsRouter);
 
