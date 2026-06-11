@@ -2,38 +2,23 @@ import pool from "../utils/db.js";
 
 async function index(request, response) {
     try {
-        // Recupera dall'URL il parametro star_rating.
-        const { start_rating } = request.query;
-
         // Query di partenza se non viene specificato alcun filtro.
         let sql = "SELECT * FROM reviews";
         // Conterrà i valori da inserire al posto di ? nella query.
         const values = [];
 
-        // Se nell'URL è presente il parametro star_rating converte il valore ricevuto da stringa a numero per poter verificare che sia un voto valido.
-        if (start_rating !== undefined) {
-            const rating = Number(start_rating);
-
-            // Il valore deve essere un numero intero compreso tra 1 e 5.
-            if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-                return response.status(400).json({
-                    error: "star_rating deve essere un numero intero compreso tra 1 e 5",
-                    results: null
-                });
-            }
-
-            // Aggiunge alla query il filtro per il numero di stelle.
+        // Se il middleware ha validato start_rating, aggiunge il filtro alla query.
+        if (request.rating !== undefined) {
             sql += " WHERE start_rating = ?";
-            // Il valore di rating viene inserito nell'array values.
-            values.push(rating);
+            values.push(request.rating);
         }
 
-        console.log("Parametro ricevuto:", start_rating);
+        console.log("Parametro ricevuto:", request.rating);
         console.log("Query eseguita:", sql, values);
 
         // Esegue la query.
-        // senza filtro values restituisce tutte le recensioni.
-        // con il filtro star_rating restituisce solo quelle con il voto richiesto.
+        // Senza filtro la query restituisce tutte le recensioni.
+        // Con il filtro start_rating restituisce solo quelle con il voto richiesto.
         const [rows] = await pool.execute(sql, values);
 
         // Anche se non sono presenti recensioni non viene restituito un errore perché un risultato vuoto è possibile.
@@ -62,14 +47,7 @@ async function index(request, response) {
 }
 
 async function show(request, response) {
-    // Recupera l'id dall'URL e lo converte da stringa a numero.
-    const realId = Number(request.params.id.trim());
-
-    // Verifica che l'id sia un numero intero positivo, se l'id non è valido, interrompe la funzione e restituisce errore 400.
-    if (!Number.isInteger(realId) || realId <= 0) {
-        response.status(400).json({ error: 'Id non valido', results: null });
-        return;
-    }
+    const { realId } = request;
 
     const sqlShow = 'SELECT * FROM `reviews` WHERE id = ?'
 
@@ -109,54 +87,13 @@ const generateCurrentDate = () => {
 }
 
 async function create(request, response) {
-
     const {
-        title,
-        body,
-        start_rating,
-        author_name,
-        find_it_useful,
-        product_id
-    } = request.body;
-
-    // Verifica che i campi obbligatori siano presenti.
-    if (
-        !title ||
-        !body ||
-        start_rating === undefined ||
-        !author_name
-    ) {
-        return response.status(400).json({
-            error: "Dati mancanti: title, body, start_rating e author_name sono obbligatori",
-            results: null
-        });
-    }
-    // Converte il numero di stelle in un valore numerico.
-    const rating = Number(start_rating);
-
-    // Verifica che il voto sia un numero intero compreso tra 1 e 5.
-    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-        return response.status(400).json({
-            error: "start_rating deve essere un numero intero compreso tra 1 e 5",
-            results: null
-        });
-    }
-
-    // Se product_id è presente, verifica che sia un numero intero positivo.
-    const realProductId =
-        product_id === undefined || product_id === null
-            ? null
-            : Number(product_id);
-
-    if (
-        realProductId !== null &&
-        (!Number.isInteger(realProductId) || realProductId <= 0)
-    ) {
-        return response.status(400).json({
-            error: "product_id deve essere un numero intero positivo",
-            results: null
-        });
-    }
+        realTitle,
+        realBody,
+        rating,
+        realAuthorName,
+        realProductId
+    } = request;
 
     const submissionDate = generateCurrentDate();
 
@@ -169,12 +106,12 @@ async function create(request, response) {
         const [result] = await pool.execute(
             sqlCreate,
             [
-                title.trim(),
-                body.trim(),
+                realTitle,
+                realBody,
                 rating,
-                author_name.trim(),
+                realAuthorName,
                 submissionDate,
-                find_it_useful ?? 0,
+                0,
                 realProductId
             ]
         );
@@ -184,12 +121,12 @@ async function create(request, response) {
             error: null,
             results: {
                 id: result.insertId,
-                title: title.trim(),
-                body: body.trim(),
+                title: realTitle,
+                body: realBody,
                 start_rating: rating,
+                author_name: realAuthorName,
                 submission_date: submissionDate,
-                author_name: author_name.trim(),
-                find_it_useful: find_it_useful ?? 0,
+                find_it_useful: 0,
                 product_id: realProductId
             }
         });
