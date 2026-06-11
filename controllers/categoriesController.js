@@ -1,4 +1,4 @@
-import connection from '../utils/db.js';
+import pool from '../utils/db.js';
 
 // funzione che gestisce la richiesta GET per ottenere tutte le categorie
 const index = async (request, response) => {
