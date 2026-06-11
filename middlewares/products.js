@@ -86,16 +86,27 @@ function validateProductBody(request, response, next) {
         return;
     }
 
-    // allergens
+    if (realAllergens === '') {
+        response.status(400)
+            .json({
+                error: 'il campo allergens è obbligatorio'
+            });
+        return;
+    } else if (realAllergens.length < 3 || realAllergens.length > 300) {
+        response.status(400)
+            .json({
+                error: 'il campo ingredients deve avere una lunghezza compresa tra i 3 e i 300 caratteri (spazi inclusi), se non presenti, inserire N/A'
+            });
+        return;
+    }
     // image url ASPETTA ALDO CON IMG = SYNCH DB
 
-    // create e update time stamp non penso ci sia da fare validazione ??? discuss lcon Lorenzo
     request.realName = realName;
     request.realShortDescription = realShortDescription;
     request.realMktgDescription = realMktgDescription;
     request.realPrice = realPrice;
     request.realIngredients = realIngredients;
-
+    request.realAllergens = realAllergens;
 
     next()
 }
