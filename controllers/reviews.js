@@ -34,7 +34,7 @@ async function index(request, response) {
         // Esegue la query.
         // senza filtro values restituisce tutte le recensioni.
         // con il filtro star_rating restituisce solo quelle con il voto richiesto.
-        const [rows] = await pool.query(sql, values);
+        const [rows] = await pool.execute(sql, values);
 
         // Anche se non sono presenti recensioni non viene restituito un errore perché un risultato vuoto è possibile.
         if (rows.length === 0) {
@@ -71,10 +71,12 @@ async function show(request, response) {
         return;
     }
 
+    const sqlShow = 'SELECT * FROM `reviews` WHERE id = ?'
+
     try {
         // Cerca nel database la recensione con l'id richiesto, il valore realId viene associato al segnaposto ?.
-        const [rows] = await pool.query(
-            'SELECT * FROM `reviews` WHERE id = ?', [realId]
+        const [rows] = await pool.execute(
+            sqlShow, [realId]
         );
         // Se non viene trovata alcuna recensione con l'id specificato, restituisce un errore 404.
         if (rows.length === 0) {
@@ -158,12 +160,14 @@ async function create(request, response) {
 
     const submissionDate = generateCurrentDate();
 
+    const sqlCreate = `INSERT INTO reviews
+            (title, body, start_rating, author_name, submission_date, find_it_useful, product_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
     try {
         // Inserisce la nuova recensione nel database i valori vengono associati ai segnaposto ? nello stesso ordine.
-        const [result] = await pool.query(
-            `INSERT INTO reviews
-            (title, body, start_rating, author_name, submission_date, find_it_useful, product_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        const [result] = await pool.execute(
+            sqlCreate,
             [
                 title.trim(),
                 body.trim(),
@@ -185,7 +189,7 @@ async function create(request, response) {
                 start_rating: rating,
                 submission_date: submissionDate,
                 author_name: author_name.trim(),
-                find_it_useful: find_it_useful ?? null,
+                find_it_useful: find_it_useful ?? 0,
                 product_id: realProductId
             }
         });
