@@ -102,13 +102,17 @@ async function show(request, response) {
     }
 }
 
+const generateCurrentDate = () => {
+    return new Date().toISOString().split("T")[0];
+}
+
 async function create(request, response) {
+
     const {
         title,
         body,
         start_rating,
         author_name,
-        submission_date,
         find_it_useful,
         product_id
     } = request.body;
@@ -118,11 +122,10 @@ async function create(request, response) {
         !title ||
         !body ||
         start_rating === undefined ||
-        !author_name ||
-        !submission_date
+        !author_name
     ) {
         return response.status(400).json({
-            error: "Dati mancanti: title, body, start_rating, author_name e submission_date sono obbligatori",
+            error: "Dati mancanti: title, body, start_rating e author_name sono obbligatori",
             results: null
         });
     }
@@ -153,6 +156,8 @@ async function create(request, response) {
         });
     }
 
+    const submissionDate = generateCurrentDate();
+
     try {
         // Inserisce la nuova recensione nel database i valori vengono associati ai segnaposto ? nello stesso ordine.
         const [result] = await pool.query(
@@ -164,8 +169,8 @@ async function create(request, response) {
                 body.trim(),
                 rating,
                 author_name.trim(),
-                submission_date,
-                find_it_useful ?? null,
+                submissionDate,
+                find_it_useful ?? 0,
                 realProductId
             ]
         );
@@ -178,6 +183,7 @@ async function create(request, response) {
                 title: title.trim(),
                 body: body.trim(),
                 start_rating: rating,
+                submission_date: submissionDate,
                 author_name: author_name.trim(),
                 find_it_useful: find_it_useful ?? null,
                 product_id: realProductId
