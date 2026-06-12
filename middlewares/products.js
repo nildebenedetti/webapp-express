@@ -111,18 +111,6 @@ function validateProductBody(request, response, next) {
     next()
 };
 
-/* aggiunto middlewares */
-function validateId(request, response, next) {
-    const id = parseInt(request.params.id);
-    if (isNaN(id) || id <= 0) {
-        response.status(400).json({ error: 'ID non valido' });
-        return;
-    }
-    request.id = id;
-    next();
-}
-
 export {
     validateProductBody,
-    validateId
 };
