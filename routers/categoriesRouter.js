@@ -13,7 +13,7 @@ router.get('/', [ index]);
 
 // rotta show
 
-router.get('/:id', [validateId, show]);
+router.get('/:id', [validateId, validateCategoryBody, show]);
 
 
 export default router;
