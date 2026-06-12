@@ -26,16 +26,17 @@ async function show(request, response) {
     const realId = request.realId;
     const querySelectById = 'SELECT * FROM `products` WHERE id = ?';
 
-    // recupero prodotto grezzo
-    const rawProduct = rows[0];
-    // creo oggetto con prodotto normalizzato
-    const normalizedProduct = normalizeProduct(rawProduct);
+
     try {
         const [rows] = await pool.query(
             querySelectById, [realId]
         );
+        // recupero prodotto grezzo
+        const rawProduct = rows[0];
+        // creo oggetto con prodotto normalizzato
+        const normalizedProduct = normalizeProduct(rawProduct);
         response.status(200)
-        .json({ error: null, results: normalizedProduct });
+            .json({ error: null, results: normalizedProduct });
     } catch (error) {
         console.error("errore durante il recupero del prodotto", error.message);
         response.status(500)
@@ -43,7 +44,7 @@ async function show(request, response) {
                 error: 'errore interno del server nel recupero del prodotto',
                 results: null
             });
-            return;
+        return;
     }
 }
 
