@@ -25,8 +25,7 @@ async function index(request, response) {
 async function show(request, response) {
     const realId = request.realId;
     const querySelectById = 'SELECT * FROM `products` WHERE id = ?';
-
-
+    
     try {
         const [rows] = await pool.query(
             querySelectById, [realId]
