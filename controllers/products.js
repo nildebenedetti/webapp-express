@@ -11,7 +11,7 @@ async function index(request, response) {
 
         response.json({
             error: null,
-            results: rows
+            results: normalizedProducts
         });
     } catch (error) {
         console.error("errore durante l'import del catalogo prodotti", error.message)
