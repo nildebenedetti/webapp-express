@@ -48,7 +48,7 @@ async function index(request, response) {
 }
 
 async function showFeaturedReviews(request, response) {
-    const  realId = request.realId;
+    const realId = request.realId;
 
     const sqlShow = `select r.*, p.name as product_name
     from reviews r join products p on p.id = r.product_id
@@ -73,10 +73,10 @@ async function showFeaturedReviews(request, response) {
 
         // Restituisce arrai di reviews.
         response.status(200)
-        .json({
-            error: null,
-            results: rows
-        });
+            .json({
+                error: null,
+                results: rows
+            });
     } catch (error) {
         console.error(
             "errore durante il recupero della recensione",
@@ -85,14 +85,14 @@ async function showFeaturedReviews(request, response) {
         // Gestisce eventuali problemi del server o del database.
         response.status(500)
             .json({
-            error: 'errore interno del server nel recupero della recensione',
-            results: null
-        });
+                error: 'errore interno del server nel recupero della recensione',
+                results: null
+            });
     }
 }
 
 async function show(request, response) {
-    const  realId = request.realId;
+    const realId = request.realId;
 
     const sqlShow = `select r.*, p.name as product_name, p.id as product_id
     from reviews r join products p on p.id = r.product_id
@@ -116,10 +116,10 @@ async function show(request, response) {
 
         // Restituisce arrai di reviews.
         response.status(200)
-        .json({
-            error: null,
-            results: rows
-        });
+            .json({
+                error: null,
+                results: rows
+            });
     } catch (error) {
         console.error(
             "errore durante il recupero della recensione",
@@ -128,9 +128,9 @@ async function show(request, response) {
         // Gestisce eventuali problemi del server o del database.
         response.status(500)
             .json({
-            error: 'errore interno del server nel recupero della recensione',
-            results: null
-        });
+                error: 'errore interno del server nel recupero della recensione',
+                results: null
+            });
     }
 }
 
@@ -194,4 +194,35 @@ async function create(request, response) {
 }
 
 
-export { index, show, showFeaturedReviews, create };
+async function destroy(request, response) {
+    const { realId } = request.params;
+    // can
+    const queryDestroyProduct = `delete r.*
+    from reviews r
+    where r.id =`;
+
+    try {
+        const [rows] = await pool.execute(
+            queryDestroyProduct, [realId]
+        );
+        
+        if ( rows.affectedRows === 0 ) {
+            response.status(404)
+                .json({
+                    error: `non è presente alcuna recensione con id ${realId}`,
+                    results: null
+                });
+                return;
+        }
+
+        response.sendStatus(204) // la cancellazione andata a buon fine vuole response 'no content'
+    } catch (error) {
+        response.status(500).json({
+            error: `Errore interno del server durante la cancellazione della recensione con id ${realId}`,
+            results: null
+        });
+    }
+}
+
+
+export { index, show, showFeaturedReviews, create, destroy };
