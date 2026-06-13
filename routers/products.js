@@ -11,13 +11,13 @@ import { validateId } from '../middlewares/validateId.js';
 
 const router = express.Router();
 
-// rotta index
+// rotta index con parametro ricerca
 router.get('/', [ index]);
 
 // rottta product featured
 router.get('/featured', [validateId, featured]);
 
-// rotta show
+// rotta show 
 
 router.get('/:id', [validateId, show]);
 
