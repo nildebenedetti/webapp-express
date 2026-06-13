@@ -1,7 +1,13 @@
 // import connection from database
 import pool from '../utils/db.js';
 import { normalizeProduct } from '../utils/functions.js';
-import { querySelectProductBySearchString, querySelectProductStarRatingById } from '../utils/queries.js';
+import {
+    querySelectAll,
+    querySelectById,
+    querySelectFeaturedProducts,
+    querySelectProductBySearchString,
+    querySelectProductStarRatingById
+} from '../utils/queries.js';
 
 async function index(request, response) {
     const userInput = request.query.search
