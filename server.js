@@ -46,5 +46,5 @@ app.listen(port, (error) => {
     } else {
         console.log(`Server in ascolto porta ${port}`);
     }
-    claudeChat();
+    // SCOMMENTA PER TEST CHAT claudeChat();
 });
