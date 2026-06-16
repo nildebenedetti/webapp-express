@@ -1,20 +1,13 @@
 import { z } from "zod";
 import { tool } from "langchain";
 import { querySelectAll } from "../../utils/queries.js";
-import { createConnection } from "mysql2";
+import pool from "../../utils/db.js";
 
 
 
 async function fetchProductInformation() {
-    const dbConnection = await createConnection({
-        host: process.env.DB_HOSTNAME,
-        user: process.env.DB_USERNAME,
-        port: process.env.DB_PORT,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    });
 
-    const [rows] = await dbConnection.execute(querySelectAll) // inserire la query
+    const [rows] = await pool.execute(querySelectAll) // inserire la query
     const rowsJSON = JSON.stringify(rows);
     return rowsJSON;
 };
