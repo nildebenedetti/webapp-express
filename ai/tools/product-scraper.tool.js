@@ -25,7 +25,7 @@ const toolDefinition = {
     è utile consultare questo tool per verificare informazioni relative al prodotto come nome, descrizione, prezzo, ingredienti e allergeni.
     `,
     schema: z.object({
-        query: z.string().describe("Il nome del prodotto o la chiave di ricerca da cercare nel database.")
+        query: z.string().describe("Il testo libero della richiesta dell'utente, le parole chiave o l'argomento principale della chat da cercare nel database.")
     }),
 
 };

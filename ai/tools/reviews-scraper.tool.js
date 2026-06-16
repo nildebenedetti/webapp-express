@@ -32,7 +32,7 @@ const toolDefinition = {
     - i points of strength dei prodotti in base alle opinioni dei clienti
     `,
     schema: z.object({
-        query: z.string().describe("Il nome del prodotto o la chiave di ricerca da cercare nel database.")
+        query: z.string().describe("Il testo libero della richiesta dell'utente, le parole chiave o l'argomento principale della chat da cercare nel database.")
     }),
 
 }
