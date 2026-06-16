@@ -1,6 +1,6 @@
 import { createAgent } from "langchain";
 import { model } from "../models/anthropic.js";
-import productInfoTool from "../tools/product-scraper.tool.js";
+import { productInfoTool } from "../tools/product-scraper.tool.js";
 
 
 const genericAgent = createAgent({
