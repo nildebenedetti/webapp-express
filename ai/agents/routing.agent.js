@@ -14,7 +14,8 @@ const routingAgent = createAgent({
     - se è una richiesta relativa all'opinion
     se è generica o relativa ai prodotti, scegli GENERIC, se è relativa all'opinione dei consumatori scegli CUSTOMER_VOICE
     `,
-    model
+    model,
+    responseFormat
 });
 
 export default routingAgent;
