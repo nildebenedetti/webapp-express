@@ -1,6 +1,6 @@
 import { createAgent } from "langchain"
 import { model } from "../models/anthropic.js"
-import { customerVoiceTool } from "../tools/reviews-sacraper.tool.js";
+import { customerVoiceTool } from "../tools/reviews-scraper.tool.js";
 
 
 const customerVoiceAgent = createAgent({
@@ -13,4 +13,4 @@ const customerVoiceAgent = createAgent({
     ]
 });
 
-export default CustomerVoiceAgent;
+export default customerVoiceAgent;
