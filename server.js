@@ -4,6 +4,7 @@ import cors from 'cors';
 import categoriesRouter from './routers/categoriesRouter.js';
 import reviewsRouter from "./routers/reviews.js";
 import productsRouter from './routers/products.js';
+import aichatRouter from "./routers/ai-agent.js";
 import { validateId } from './middlewares/validateId.js';
 import { claudeChat } from './utils/claudeChat.js';
 
@@ -24,6 +25,8 @@ app.use("/reviews", reviewsRouter);
 app.use("/categories", categoriesRouter);
 
 app.use('/products', productsRouter);
+
+app.use('/aiagent', aichatRouter);
 
 
 // test: stampo i prodotti nel terminal
@@ -46,5 +49,5 @@ app.listen(port, (error) => {
     } else {
         console.log(`Server in ascolto porta ${port}`);
     }
-    claudeChat();
+    // SCOMMENTA PER TEST CHAT claudeChat();
 });
