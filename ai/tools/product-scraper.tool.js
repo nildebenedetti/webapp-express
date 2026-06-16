@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { tool } from "langchain";
-import { querySelectAll } from "../../utils/queries";
+import { querySelectAll } from "../../utils/queries.js";
 import { createConnection } from "mysql2";
 
 
@@ -25,7 +25,7 @@ const toolDefinition = {
     è utile consultare questo tool per verificare informazioni relative al prodotto come nome, descrizione, prezzo, ingredienti e allergeni.
     `,
     schema: z.object({
-        query: z.string().description("Il nome del prodotto o la chiave di ricerca da cercare nel database.")
+        query: z.string().describe("Il nome del prodotto o la chiave di ricerca da cercare nel database.")
     }),
 
 };
