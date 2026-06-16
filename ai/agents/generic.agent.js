@@ -1,6 +1,6 @@
-import { createAgent } from "langchain"
-import { model } from "../models/anthropic.js"
-import { productScraperTool } from "../tools/product-scraper.tool.js";
+import { createAgent } from "langchain";
+import { model } from "../models/anthropic.js";
+import productInfoTool from "../tools/product-scraper.tool.js";
 
 
 const genericAgent = createAgent({
@@ -12,7 +12,7 @@ const genericAgent = createAgent({
     `,
     model,
     tools: [
-        productScraperTool
+        
     ]
 });
 
