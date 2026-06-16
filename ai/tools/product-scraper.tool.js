@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { tool } from "langchain";
 import { querySelectAll } from "../../utils/queries";
+import { createConnection } from "mysql2";
 
 
 
@@ -22,7 +23,10 @@ const toolDefinition = {
     name: "product_scraper",
     description: `restituisce tutte le informazioni inerenti ai prodotti della gelateria iScream.
     è utile consultare questo tool per verificare informazioni relative al prodotto come nome, descrizione, prezzo, ingredienti e allergeni.
-    `
+    `,
+    schema: z.object({
+        query: z.string().description("Il nome del prodotto o la chiave di ricerca da cercare nel database.")
+    }),
 
 };
 
