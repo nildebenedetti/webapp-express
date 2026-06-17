@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { tool } from "langchain";
-import { createConnection } from "mysql2";
+import pool from "../../utils/db.js";
 
 
 const querySelectAllReviewsMatchedProducts = `
@@ -10,15 +10,8 @@ join products p on p.id = r.product_id;
 `;
 
 async function fetchReviews() {
-    const dbConnection = await createConnection({
-        host: process.env.DB_HOSTNAME,
-        user: process.env.DB_USERNAME,
-        port: process.env.DB_PORT,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    });
 
-    const [rows] = await dbConnection.execute(querySelectAllReviewsMatchedProducts) // inserire la query
+    const [rows] = await pool.execute(querySelectAllReviewsMatchedProducts) // inserire la query
     const rowsJSON = JSON.stringify(rows);
     return rowsJSON;
 }
